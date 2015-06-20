@@ -1,9 +1,3 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
-    <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-        <title>Untitled Document</title>
-    <script>
 var cardGroups = [
     ["No. 001 莫莉", "No. 002 高級水術士莫莉", "No. 003 水魔法師莫莉", "No. 004 水元素賢者莫莉", "No. 408 "],
     ["No. 005 肖恩", "No. 006 高級劍士肖恩", "No. 007 火焰劍士肖恩", "No. 008 紅蓮劍士肖恩", "No. 409 "],
@@ -183,35 +177,23 @@ var cardGroups = [
  
 ];
  //    var patt = /No.\s+(\d+)(.*)/;
-	// for(var i = 0; i < cardGroups.length; ++i) {
-	// 	for(var j = 0; j < cardGroups[i].length; ++j) {
+    // for(var i = 0; i < cardGroups.length; ++i) {
+    //  for(var j = 0; j < cardGroups[i].length; ++j) {
 
-	// 	}
+    //  }
  //        var str = cardGroups[i][j-1];
  //        var res = patt.exec(str);
  //        if(res.length == 3) {
  //            console.log(res[1],res[2]);
  //        }
-		
-	// }
-
-    </script>
-    <style>
-        img.cardimg { margin:1px;border-width:3px;border-color:white;border-style:solid; }
-        img.cardimg.nocard { opacity:0.3; }
-        img.cardimg:hover { border-color:lightgreen; }
-        img.cardimg.selected, img.cardimg.selected:hover  { border-color:red; }
-    </style>
-    </head>
+        
+    // }
     
-    <body>
-    	
-   <script src="jquery-1.11.3.min.js"></script>     
-   <script>
-
+    
     var patt = /No.\s+(\d+)(.*)/;
 
     function initImages() {
+        $("#cimgArea").html("");
         for(var i = 0; i < cardGroups.length; ++i) {
             for(var j = 0; j < cardGroups[i].length; ++j) {
 
@@ -231,12 +213,21 @@ var cardGroups = [
                 imgObj.addClass("cardimg");
                 imgObj.data("cards",cardGroups[i]);
                 imgObj.data("currentID",j-1);
-                $(document.body).append(imgObj);
+                $("#cimgArea").append(imgObj);
                 updateImage(imgObj);
                 //document.write("<img  alt=\""+res[2]+"\" src=\"img/60("+num+")\" />");
             // }
             
         }
+    }
+
+    function getCardImgPath(num) {
+        //var num = parseInt(res[1])-1;
+        if(num >= 850 && num < 888) {
+            num = num - 3;
+        }
+        return "cimg/img_"+num+".png"; 
+ 
     }
 
     function exportData() {
@@ -247,7 +238,7 @@ var cardGroups = [
             arr.push(imgObj.data("currentID"));
         }
         //console.log(arr.join(""));
-        return "importData(\""+arr.join("")+"\")";
+        return arr.join("");
     }
 
     function importData(d) {
@@ -274,17 +265,22 @@ var cardGroups = [
         var res = patt.exec(str);
         if(res.length == 3) {
             //console.log(res[1],res[2]);
-            var num = parseInt(res[1])-1;
+            
             imgObj.attr("alt",res[2]);
-            if(num == 0) {
-                imgObj.attr("src","img/60"); 
-            }
-            else {
-                if(num >= 850 && num < 888) {
-                    num = num - 3;
-                }
-                imgObj.attr("src","img/60("+num+")"); 
-            }
+
+            var num = parseInt(res[1])-1;
+            
+            imgObj.attr("src",getCardImgPath(num)); 
+            // var num = parseInt(res[1])-1;
+            // if(num == 0) {
+            //     imgObj.attr("src","img/60"); 
+            // }
+            // else {
+            //     if(num >= 850 && num < 888) {
+            //         num = num - 3;
+            //     }
+            //     imgObj.attr("src","img/60("+num+")"); 
+            // }
             if(nocard) {
                 imgObj.addClass("nocard");
             }
@@ -352,6 +348,22 @@ var cardGroups = [
 
         });
 
+        $(document).on("click",".loadBtn",function(e){            
+            var d = localStorage.getItem("mytos");
+            if(d != null) {
+                importData(d);
+            }            
+        });
+        var d = localStorage.getItem("mytos");
+        if(d == null) {
+            $(".loadBtn").hide();
+        }
+
+        $(document).on("click",".storeBtn",function(e){            
+            localStorage.setItem("mytos",exportData());
+            $(".loadBtn").show();
+        });
+
         $(document).on("click",".cardimg",function(e){
             var imgObj = $(e.currentTarget);
             //imgObj.toggleClass("selected");
@@ -384,7 +396,3 @@ var cardGroups = [
         document.ondragstart = function() { return false; };
         document.onselectstart = function() { return false; };
     });
-
-    </script>
-    </body>
-</html>
