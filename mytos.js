@@ -328,12 +328,12 @@ var cardGroups = [
         //     }
         // });
 
-        $(document).on("mousedown",".cardimg",function(e){
-            var imgObj = $(e.currentTarget);
-            var cards = imgObj.data("cards");
-            var idx = imgObj.data("currentID");
-            console.log(cards,idx,cards[idx]);
-        });
+        // $(document).on("mousedown",".cardimg",function(e){
+        //     var imgObj = $(e.currentTarget);
+        //     var cards = imgObj.data("cards");
+        //     var idx = imgObj.data("currentID");
+        //     console.log(cards,idx,cards[idx]);
+        // });
 
         $(document).on("mouseover",".cardimg",function(e){
             var imgObj = $(e.currentTarget);
@@ -367,7 +367,7 @@ var cardGroups = [
         $(document).on("click",".cardimg",function(e){
             var imgObj = $(e.currentTarget);
             //imgObj.toggleClass("selected");
-            console.log(e);
+            //console.log(e);
             if(e.altKey) {
                 prevImage(imgObj);
             }
